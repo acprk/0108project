@@ -6,13 +6,14 @@ from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-import cv2
 import numpy as np
 import base64
 from pathlib import Path
 from typing import Optional
 import logging
 import os
+import io
+from PIL import Image
 
 from face_detector import get_face_detector
 from config import settings
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 # 创建 FastAPI 应用
 app = FastAPI(
     title="人脸识别系统",
-    description="基于 Python + OpenCV + face_recognition 的在线人脸识别系统",
+    description="基于 Python + face_recognition (Pillow) 的在线人脸识别系统",
     version="1.0.0"
 )
 
@@ -90,24 +91,27 @@ async def detect_faces(file: UploadFile = File(...)):
     try:
         # 读取上传的图片
         contents = await file.read()
-        nparr = np.frombuffer(contents, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-        if image is None:
-            raise HTTPException(status_code=400, detail="无法读取图片")
+        
+        # 使用 Pillow 读取图片
+        try:
+            image = Image.open(io.BytesIO(contents)).convert("RGB")
+            image_array = np.array(image)
+        except Exception as e:
+             raise HTTPException(status_code=400, detail="无法读取图片文件")
 
         # 获取人脸检测器
         detector = get_face_detector()
 
         # 检测人脸
-        face_locations, face_names = detector.detect_faces(image)
+        face_locations, face_names = detector.detect_faces(image_array)
 
-        # 绘制人脸框
-        result_image = detector.draw_faces(image, face_locations, face_names)
+        # 绘制人脸框 (返回的是 PIL Image 对象)
+        result_image_pil = detector.draw_faces(image_array, face_locations, face_names)
 
         # 将结果图片编码为 base64
-        _, buffer = cv2.imencode('.jpg', result_image)
-        img_base64 = base64.b64encode(buffer).decode('utf-8')
+        buffer = io.BytesIO()
+        result_image_pil.save(buffer, format="JPEG")
+        img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
         # 返回结果
         return JSONResponse({
@@ -150,17 +154,19 @@ async def detect_faces_stream(image_data: str = Form(...)):
             image_data = image_data.split(',')[1]
 
         img_bytes = base64.b64decode(image_data)
-        nparr = np.frombuffer(img_bytes, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-        if image is None:
+        
+        # 使用 Pillow 读取图片
+        try:
+            image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+            image_array = np.array(image)
+        except Exception:
             raise HTTPException(status_code=400, detail="无法读取图片数据")
 
         # 获取人脸检测器
         detector = get_face_detector()
 
         # 检测人脸
-        face_locations, face_names = detector.detect_faces(image)
+        face_locations, face_names = detector.detect_faces(image_array)
 
         # 返回结果（不返回图片，减少数据传输量）
         return JSONResponse({
@@ -203,10 +209,12 @@ async def add_known_face(
     try:
         # 读取上传的图片
         contents = await file.read()
-        nparr = np.frombuffer(contents, np.uint8)
-        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-        if image is None:
+        
+        # 使用 Pillow 读取图片
+        try:
+            image = Image.open(io.BytesIO(contents)).convert("RGB")
+            image_array = np.array(image)
+        except Exception:
             raise HTTPException(status_code=400, detail="无法读取图片")
 
         # 获取人脸检测器
@@ -218,7 +226,7 @@ async def add_known_face(
             save_path = f"models/known_faces/{name}.jpg"
 
         # 添加人脸
-        success = detector.add_known_face(image, name, save_path)
+        success = detector.add_known_face(image_array, name, save_path)
 
         if success:
             return JSONResponse({
