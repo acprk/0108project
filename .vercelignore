@@ -1,0 +1,9 @@
+uploads/
+models/**/*.jpg
+models/**/*.png
+models/**/*.jpeg
+*.mp4
+*.zip
+.git/
+venv/
+__pycache__/
