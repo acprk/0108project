@@ -1,23 +1,9 @@
 {
-  "version": 2,
-  "builds": [
+  "runtime": "python3.9",
+  "rewrites": [
     {
-      "src": "main.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "static/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/main.py"
+      "source": "/(.*)",
+      "destination": "/main.py"
     }
   ]
 }
