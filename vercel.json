@@ -4,5 +4,6 @@
       "source": "/(.*)",
       "destination": "/main.py"
     }
-  ]
+  ],
+  "installCommand": "pip install cmake && pip install dlib==19.24.2 && pip install -r requirements.txt"
 }
