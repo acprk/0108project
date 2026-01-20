@@ -1,28 +1,10 @@
-# Web 框架
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 python-multipart==0.0.6
 pydantic-settings>=2.0.0
-
-# 人脸识别核心库
-# 升级 numpy 以兼容 Python 3.12 和 opencv-python-headless 4.9+
 numpy>=1.26.0,<2.0.0
-# 使用较新的 opencv-python-headless
 opencv-python-headless==4.9.0.80
-
-# 图像处理
 Pillow==10.2.0
-
-# 数据库和存储
 supabase==2.3.0
-
-# 构建工具
-cmake>=3.20.0
-setuptools>=68.0.0
-wheel>=0.40.0
-
-# 重要：在 Vercel 上使用 dlib-bin (预编译版本)，不要直接使用 dlib
-# 注意：face_recognition 依赖 dlib，如果不安装 dlib 它会尝试编译安装，导致失败
-# 所以我们显式安装 dlib-bin
-dlib-bin
+https://github.com/sachadee/Dlib/raw/master/dlib-19.24.99-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 face-recognition==1.3.0
