@@ -4,11 +4,5 @@
       "source": "/(.*)",
       "destination": "/main.py"
     }
-  ],
-  "functions": {
-    "main.py": {
-      "includeFiles": "templates/**,static/**,models/**",
-      "excludeFiles": "uploads/**,**/*.jpg,**/*.png,**/*.jpeg"
-    }
-  }
+  ]
 }
