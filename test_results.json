@@ -1,0 +1,577 @@
+{
+  "known_faces": {
+    "total": 50,
+    "correct": 50,
+    "wrong": 0,
+    "not_detected": 0,
+    "details": [
+      {
+        "file": "薛颖.jpg",
+        "expected": "薛颖",
+        "result": "薛颖",
+        "status": "CORRECT"
+      },
+      {
+        "file": "吕瑶.jpg",
+        "expected": "吕瑶",
+        "result": "吕瑶",
+        "status": "CORRECT"
+      },
+      {
+        "file": "赵静.jpg",
+        "expected": "赵静",
+        "result": "赵静",
+        "status": "CORRECT"
+      },
+      {
+        "file": "郑文.jpg",
+        "expected": "郑文",
+        "result": "郑文",
+        "status": "CORRECT"
+      },
+      {
+        "file": "雷超.jpg",
+        "expected": "雷超",
+        "result": "雷超",
+        "status": "CORRECT"
+      },
+      {
+        "file": "任晓辉.jpg",
+        "expected": "任晓辉",
+        "result": "任晓辉",
+        "status": "CORRECT"
+      },
+      {
+        "file": "钟雨欣.jpg",
+        "expected": "钟雨欣",
+        "result": "钟雨欣",
+        "status": "CORRECT"
+      },
+      {
+        "file": "武强.jpg",
+        "expected": "武强",
+        "result": "武强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "罗红.jpg",
+        "expected": "罗红",
+        "result": "罗红",
+        "status": "CORRECT"
+      },
+      {
+        "file": "陈鹏.jpg",
+        "expected": "陈鹏",
+        "result": "陈鹏",
+        "status": "CORRECT"
+      },
+      {
+        "file": "江思远.jpg",
+        "expected": "江思远",
+        "result": "江思远",
+        "status": "CORRECT"
+      },
+      {
+        "file": "向建华.jpg",
+        "expected": "向建华",
+        "result": "向建华",
+        "status": "CORRECT"
+      },
+      {
+        "file": "吕建国.jpg",
+        "expected": "吕建国",
+        "result": "吕建国",
+        "status": "CORRECT"
+      },
+      {
+        "file": "姜艳.jpg",
+        "expected": "姜艳",
+        "result": "姜艳",
+        "status": "CORRECT"
+      },
+      {
+        "file": "贾志强.jpg",
+        "expected": "贾志强",
+        "result": "贾志强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "韩婷.jpg",
+        "expected": "韩婷",
+        "result": "韩婷",
+        "status": "CORRECT"
+      },
+      {
+        "file": "高琳.jpg",
+        "expected": "高琳",
+        "result": "高琳",
+        "status": "CORRECT"
+      },
+      {
+        "file": "邓晓辉.jpg",
+        "expected": "邓晓辉",
+        "result": "邓晓辉",
+        "status": "CORRECT"
+      },
+      {
+        "file": "覃丽.jpg",
+        "expected": "覃丽",
+        "result": "覃丽",
+        "status": "CORRECT"
+      },
+      {
+        "file": "万勇.jpg",
+        "expected": "万勇",
+        "result": "万勇",
+        "status": "CORRECT"
+      },
+      {
+        "file": "向丽.jpg",
+        "expected": "向丽",
+        "result": "向丽",
+        "status": "CORRECT"
+      },
+      {
+        "file": "崔建伟.jpg",
+        "expected": "崔建伟",
+        "result": "崔建伟",
+        "status": "CORRECT"
+      },
+      {
+        "file": "肖辉.jpg",
+        "expected": "肖辉",
+        "result": "肖辉",
+        "status": "CORRECT"
+      },
+      {
+        "file": "孙勇.jpg",
+        "expected": "孙勇",
+        "result": "孙勇",
+        "status": "CORRECT"
+      },
+      {
+        "file": "孟强.jpg",
+        "expected": "孟强",
+        "result": "孟强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "顾伟.jpg",
+        "expected": "顾伟",
+        "result": "顾伟",
+        "status": "CORRECT"
+      },
+      {
+        "file": "杜瑶.jpg",
+        "expected": "杜瑶",
+        "result": "杜瑶",
+        "status": "CORRECT"
+      },
+      {
+        "file": "秦鹏.jpg",
+        "expected": "秦鹏",
+        "result": "秦鹏",
+        "status": "CORRECT"
+      },
+      {
+        "file": "万晓燕.jpg",
+        "expected": "万晓燕",
+        "result": "万晓燕",
+        "status": "CORRECT"
+      },
+      {
+        "file": "陆刚.jpg",
+        "expected": "陆刚",
+        "result": "陆刚",
+        "status": "CORRECT"
+      },
+      {
+        "file": "黎萍.jpg",
+        "expected": "黎萍",
+        "result": "黎萍",
+        "status": "CORRECT"
+      },
+      {
+        "file": "魏晓燕.jpg",
+        "expected": "魏晓燕",
+        "result": "魏晓燕",
+        "status": "CORRECT"
+      },
+      {
+        "file": "丁桂兰.jpg",
+        "expected": "丁桂兰",
+        "result": "丁桂兰",
+        "status": "CORRECT"
+      },
+      {
+        "file": "谭晓峰.jpg",
+        "expected": "谭晓峰",
+        "result": "谭晓峰",
+        "status": "CORRECT"
+      },
+      {
+        "file": "曹晓红.jpg",
+        "expected": "曹晓红",
+        "result": "曹晓红",
+        "status": "CORRECT"
+      },
+      {
+        "file": "孙强.jpg",
+        "expected": "孙强",
+        "result": "孙强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "许嘉欣.jpg",
+        "expected": "许嘉欣",
+        "result": "许嘉欣",
+        "status": "CORRECT"
+      },
+      {
+        "file": "肖磊.jpg",
+        "expected": "肖磊",
+        "result": "肖磊",
+        "status": "CORRECT"
+      },
+      {
+        "file": "魏思源.jpg",
+        "expected": "魏思源",
+        "result": "魏思源",
+        "status": "CORRECT"
+      },
+      {
+        "file": "李国强.jpg",
+        "expected": "李国强",
+        "result": "李国强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "沈建平.jpg",
+        "expected": "沈建平",
+        "result": "沈建平",
+        "status": "CORRECT"
+      },
+      {
+        "file": "姜波.jpg",
+        "expected": "姜波",
+        "result": "姜波",
+        "status": "CORRECT"
+      },
+      {
+        "file": "马志强.jpg",
+        "expected": "马志强",
+        "result": "马志强",
+        "status": "CORRECT"
+      },
+      {
+        "file": "莫晓明.jpg",
+        "expected": "莫晓明",
+        "result": "莫晓明",
+        "status": "CORRECT"
+      },
+      {
+        "file": "郑丽.jpg",
+        "expected": "郑丽",
+        "result": "郑丽",
+        "status": "CORRECT"
+      },
+      {
+        "file": "黎勇.jpg",
+        "expected": "黎勇",
+        "result": "黎勇",
+        "status": "CORRECT"
+      },
+      {
+        "file": "严瑶.jpg",
+        "expected": "严瑶",
+        "result": "严瑶",
+        "status": "CORRECT"
+      },
+      {
+        "file": "丁华.jpg",
+        "expected": "丁华",
+        "result": "丁华",
+        "status": "CORRECT"
+      },
+      {
+        "file": "莫玉兰.jpg",
+        "expected": "莫玉兰",
+        "result": "莫玉兰",
+        "status": "CORRECT"
+      },
+      {
+        "file": "唐思远.jpg",
+        "expected": "唐思远",
+        "result": "唐思远",
+        "status": "CORRECT"
+      }
+    ]
+  },
+  "unknown_faces": {
+    "total": 50,
+    "correct_reject": 6,
+    "false_positive": 44,
+    "not_detected": 0,
+    "details": [
+      {
+        "file": "unknown_018.jpg",
+        "result": "曹洋",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_036.jpg",
+        "result": "陶思琪",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_040.jpg",
+        "result": "姜娜",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_038.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_041.jpg",
+        "result": "李波",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_021.jpg",
+        "result": "潘秀英",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_024.jpg",
+        "result": "武晓东",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_033.jpg",
+        "result": "田华",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_042.jpg",
+        "result": "段涛",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_045.jpg",
+        "result": "顾娜",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_004.jpg",
+        "result": "梁晓丽",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_049.jpg",
+        "result": "江文",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_023.jpg",
+        "result": "宋倩",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_032.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_015.jpg",
+        "result": "姜艳",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_007.jpg",
+        "result": "郝建国",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_002.jpg",
+        "result": "林丽",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_031.jpg",
+        "result": "罗平",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_016.jpg",
+        "result": "魏丽",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_019.jpg",
+        "result": "赵晓丽",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_043.jpg",
+        "result": "李玉",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_050.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_011.jpg",
+        "result": "姜霞",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_034.jpg",
+        "result": "吕瑶",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_046.jpg",
+        "result": "黎勇",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_047.jpg",
+        "result": "梁红",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_008.jpg",
+        "result": "马磊",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_022.jpg",
+        "result": "范宇",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_026.jpg",
+        "result": "覃丽",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_001.jpg",
+        "result": "陆雨婷",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_029.jpg",
+        "result": "万思远",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_014.jpg",
+        "result": "吕建国",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_003.jpg",
+        "result": "田鹏",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_039.jpg",
+        "result": "贺月英",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_006.jpg",
+        "result": "方欣",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_030.jpg",
+        "result": "熊志明",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_037.jpg",
+        "result": "刘建华",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_012.jpg",
+        "result": "胡思源",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_027.jpg",
+        "result": "杨超",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_025.jpg",
+        "result": "孟丹",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_013.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_017.jpg",
+        "result": "郑国强",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_005.jpg",
+        "result": "邓雨婷",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_010.jpg",
+        "result": "秦建平",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_044.jpg",
+        "result": "方欣",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_009.jpg",
+        "result": "赵丹",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_020.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_035.jpg",
+        "result": "Unknown",
+        "status": "CORRECT_REJECT"
+      },
+      {
+        "file": "unknown_048.jpg",
+        "result": "蔡晓燕",
+        "status": "FALSE_POSITIVE"
+      },
+      {
+        "file": "unknown_028.jpg",
+        "result": "江萍",
+        "status": "FALSE_POSITIVE"
+      }
+    ]
+  },
+  "summary": {
+    "total_tests": 100,
+    "total_correct": 56,
+    "total_errors": 44,
+    "total_not_detected": 0,
+    "accuracy": 56.00000000000001,
+    "rating": "需要改进 ⭐",
+    "timestamp": "2026-01-08T17:24:07.208682"
+  }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人脸识别系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI 人脸识别系统</h1>
+            <p class="subtitle">基于深度学习的实时人脸检测与识别</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="realtime">实时识别</button>
+            <button class="tab-btn" data-tab="upload">图片上传</button>
+            <button class="tab-btn" data-tab="manage">人脸管理</button>
+        </div>
+
+        <!-- 实时识别标签页 -->
+        <div class="tab-content active" id="realtime">
+            <div class="help-tip" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 5px;">
+                <strong>💡 提示：</strong>
+                如果无法访问摄像头，请确保：
+                <span id="accessHint"></span>
+            </div>
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+                <div id="face-overlay"></div>
+            </div>
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">启动摄像头</button>
+                <button id="stopBtn" class="btn btn-secondary" disabled>停止识别</button>
+                <div class="status" id="status">准备就绪</div>
+            </div>
+            <div id="results" class="results"></div>
+        </div>
+
+        <!-- 图片上传标签页 -->
+        <div class="tab-content" id="upload">
+            <div class="upload-area">
+                <div class="upload-box" id="uploadBox">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p>点击或拖拽图片到此处</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </div>
+            <div id="uploadResult" class="upload-result"></div>
+        </div>
+
+        <!-- 人脸管理标签页 -->
+        <div class="tab-content" id="manage">
+            <div class="manage-section">
+                <h2>添加新人脸</h2>
+                <div class="add-face-form">
+                    <input type="text" id="faceName" placeholder="输入姓名" class="input">
+                    <div class="upload-box-small" id="addFaceBox">
+                        <input type="file" id="faceFileInput" accept="image/*" hidden>
+                        <p>选择人脸图片</p>
+                    </div>
+                    <button id="addFaceBtn" class="btn btn-primary">添加人脸</button>
+                </div>
+            </div>
+            <div class="manage-section">
+                <h2>已知人脸列表</h2>
+                <div id="knownFacesList" class="known-faces-list">
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

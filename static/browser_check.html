@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浏览器兼容性检测</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .check-section {
+            margin-bottom: 30px;
+        }
+
+        .check-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ccc;
+        }
+
+        .check-item.supported {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .check-item.not-supported {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .check-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .check-label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .check-value {
+            color: #666;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h4 {
+            color: #1976D2;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .recommendation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .recommendation h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .recommendation p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-button {
+            display: block;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button.primary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .action-button.secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @media (max-width: 600px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 浏览器兼容性检测</h1>
+            <p>检测您的浏览器是否支持摄像头功能</p>
+        </header>
+
+        <div class="content">
+            <div class="check-section">
+                <h3>📱 基本信息</h3>
+                <div id="basicInfo"></div>
+            </div>
+
+            <div class="check-section">
+                <h3>🎥 摄像头 API 支持</h3>
+                <div id="cameraSupport"></div>
+            </div>
+
+            <div class="check-section">
+                <h3>🌐 其他 API 支持</h3>
+                <div id="otherSupport"></div>
+            </div>
+
+            <div id="recommendation"></div>
+
+            <div class="action-buttons" id="actionButtons"></div>
+        </div>
+    </div>
+
+    <script>
+        // 检测项
+        const checks = {
+            basic: [],
+            camera: [],
+            other: []
+        };
+
+        // 基本信息
+        checks.basic.push({
+            label: '浏览器',
+            value: navigator.userAgent,
+            supported: true
+        });
+
+        checks.basic.push({
+            label: '平台',
+            value: navigator.platform || 'Unknown',
+            supported: true
+        });
+
+        checks.basic.push({
+            label: '语言',
+            value: navigator.language || 'Unknown',
+            supported: true
+        });
+
+        checks.basic.push({
+            label: '在线状态',
+            value: navigator.onLine ? '在线' : '离线',
+            supported: navigator.onLine
+        });
+
+        checks.basic.push({
+            label: '安全上下文 (Secure Context)',
+            value: window.isSecureContext ? '是 (HTTPS/localhost/局域网)' : '否 (HTTP)',
+            supported: window.isSecureContext
+        });
+
+        // 摄像头支持
+        checks.camera.push({
+            label: 'navigator 对象',
+            value: typeof navigator !== 'undefined' ? '存在' : '不存在',
+            supported: typeof navigator !== 'undefined'
+        });
+
+        checks.camera.push({
+            label: 'navigator.mediaDevices',
+            value: navigator.mediaDevices ? '存在' : '不存在',
+            supported: !!navigator.mediaDevices
+        });
+
+        if (navigator.mediaDevices) {
+            checks.camera.push({
+                label: 'getUserMedia 方法',
+                value: navigator.mediaDevices.getUserMedia ? '存在' : '不存在',
+                supported: !!navigator.mediaDevices.getUserMedia
+            });
+
+            checks.camera.push({
+                label: 'enumerateDevices 方法',
+                value: navigator.mediaDevices.enumerateDevices ? '存在' : '不存在',
+                supported: !!navigator.mediaDevices.enumerateDevices
+            });
+        } else {
+            checks.camera.push({
+                label: 'getUserMedia 方法',
+                value: '不存在 (mediaDevices 不可用)',
+                supported: false
+            });
+        }
+
+        // 旧版 API 检查
+        const hasLegacyGetUserMedia = !!(
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia
+        );
+
+        checks.camera.push({
+            label: '旧版 getUserMedia',
+            value: hasLegacyGetUserMedia ? '存在 (但已废弃)' : '不存在',
+            supported: hasLegacyGetUserMedia
+        });
+
+        // 其他 API
+        checks.other.push({
+            label: 'File API',
+            value: typeof FileReader !== 'undefined' ? '支持' : '不支持',
+            supported: typeof FileReader !== 'undefined'
+        });
+
+        checks.other.push({
+            label: 'FormData API',
+            value: typeof FormData !== 'undefined' ? '支持' : '不支持',
+            supported: typeof FormData !== 'undefined'
+        });
+
+        checks.other.push({
+            label: 'Fetch API',
+            value: typeof fetch !== 'undefined' ? '支持' : '不支持',
+            supported: typeof fetch !== 'undefined'
+        });
+
+        checks.other.push({
+            label: 'Canvas API',
+            value: document.createElement('canvas').getContext ? '支持' : '不支持',
+            supported: !!document.createElement('canvas').getContext
+        });
+
+        checks.other.push({
+            label: 'Blob API',
+            value: typeof Blob !== 'undefined' ? '支持' : '不支持',
+            supported: typeof Blob !== 'undefined'
+        });
+
+        // 渲染检测结果
+        function renderChecks(container, items) {
+            const div = document.getElementById(container);
+            items.forEach(item => {
+                const checkItem = document.createElement('div');
+                checkItem.className = `check-item ${item.supported ? 'supported' : 'not-supported'}`;
+
+                const icon = item.supported ? '✅' : '❌';
+
+                checkItem.innerHTML = `
+                    <div class="check-icon">${icon}</div>
+                    <div style="flex: 1;">
+                        <div class="check-label">${item.label}</div>
+                        <div class="check-value">${item.value}</div>
+                    </div>
+                `;
+
+                div.appendChild(checkItem);
+            });
+        }
+
+        // 生成建议
+        function generateRecommendation() {
+            const hasMediaDevices = !!navigator.mediaDevices;
+            const hasGetUserMedia = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+            const hasFileAPI = typeof FileReader !== 'undefined';
+            const isSecure = window.isSecureContext;
+
+            const recommendationDiv = document.getElementById('recommendation');
+            const actionButtonsDiv = document.getElementById('actionButtons');
+
+            if (hasGetUserMedia && isSecure) {
+                // 完全支持 WebRTC
+                recommendationDiv.innerHTML = `
+                    <div class="info-box">
+                        <h4>🎉 太好了！您的浏览器完全支持摄像头功能！</h4>
+                        <p>您可以使用以下任何一种方式：</p>
+                        <ul>
+                            <li><strong>WebRTC 实时摄像头</strong>：支持实时预览和拍照</li>
+                            <li><strong>系统相机调用</strong>：直接使用系统相机应用</li>
+                            <li><strong>图片上传</strong>：上传已有照片</li>
+                        </ul>
+                    </div>
+                `;
+
+                actionButtonsDiv.innerHTML = `
+                    <a href="camera_capture.html" class="action-button primary">
+                        🎥 使用 WebRTC 摄像头
+                    </a>
+                    <a href="camera_mobile_capture.html" class="action-button secondary">
+                        📸 使用系统相机
+                    </a>
+                `;
+
+            } else if (!hasMediaDevices || !hasGetUserMedia) {
+                // 不支持 WebRTC
+                recommendationDiv.innerHTML = `
+                    <div class="recommendation">
+                        <h4>⚠️ 您的浏览器不支持 WebRTC 摄像头功能</h4>
+                        <p><strong>原因分析：</strong></p>
+                        <ul>
+                            <li>浏览器版本可能过旧（需要 Chrome 53+, Firefox 36+, Safari 11+）</li>
+                            <li>或者是不支持 WebRTC 的浏览器（如 IE）</li>
+                        </ul>
+                        <p><strong>建议方案：</strong></p>
+                        <ul>
+                            <li>✅ 使用<strong>系统相机调用方案</strong>（推荐，兼容性最好）</li>
+                            <li>✅ 或者直接<strong>上传图片</strong></li>
+                            <li>⚠️ 或者更新/更换浏览器（Chrome、Edge、Firefox）</li>
+                        </ul>
+                    </div>
+                `;
+
+                actionButtonsDiv.innerHTML = `
+                    <a href="camera_mobile_capture.html" class="action-button primary">
+                        📸 使用系统相机（推荐）
+                    </a>
+                    <a href="simple_upload.html" class="action-button secondary">
+                        📤 上传图片
+                    </a>
+                `;
+
+            } else if (!isSecure) {
+                // 非安全上下文
+                recommendationDiv.innerHTML = `
+                    <div class="recommendation">
+                        <h4>⚠️ 非安全上下文 (Non-Secure Context)</h4>
+                        <p>您的浏览器支持摄像头 API，但当前页面不在安全上下文中。</p>
+                        <p><strong>可能的原因：</strong></p>
+                        <ul>
+                            <li>使用了 HTTP 协议（而非 HTTPS）</li>
+                            <li>不是 localhost 或局域网地址</li>
+                        </ul>
+                        <p><strong>建议方案：</strong></p>
+                        <ul>
+                            <li>✅ 使用<strong>系统相机调用方案</strong>（不受安全上下文限制）</li>
+                            <li>⚠️ 或者配置 HTTPS</li>
+                        </ul>
+                    </div>
+                `;
+
+                actionButtonsDiv.innerHTML = `
+                    <a href="camera_mobile_capture.html" class="action-button primary">
+                        📸 使用系统相机
+                    </a>
+                    <a href="simple_upload.html" class="action-button secondary">
+                        📤 上传图片
+                    </a>
+                `;
+            }
+        }
+
+        // 页面加载完成后执行检测
+        window.addEventListener('DOMContentLoaded', () => {
+            renderChecks('basicInfo', checks.basic);
+            renderChecks('cameraSupport', checks.camera);
+            renderChecks('otherSupport', checks.other);
+            generateRecommendation();
+
+            console.log('=== 浏览器检测结果 ===');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('mediaDevices:', navigator.mediaDevices);
+            console.log('isSecureContext:', window.isSecureContext);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端摄像头拍照识别</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .warning-box strong {
+            color: #856404;
+        }
+
+        .camera-input-wrapper {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .camera-button {
+            display: block;
+            width: 100%;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .camera-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .camera-button:active {
+            transform: translateY(0);
+        }
+
+        .camera-icon {
+            font-size: 3em;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .preview-section.show {
+            display: block;
+        }
+
+        .preview-image {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-button {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .upload-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #dee2e6;
+        }
+
+        .result-box.success {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .result-box h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .face-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .face-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .face-location {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .debug-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .debug-section h4 {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .debug-content {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.8;
+            color: #333;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .debug-line {
+            padding: 3px 0;
+        }
+
+        .server-config {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .server-config label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .server-config input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .server-config input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📱 移动端摄像头拍照识别</h1>
+            <p class="subtitle">直接调用系统相机拍照 → 上传识别</p>
+        </header>
+
+        <div class="content">
+            <div class="info-box">
+                <h3>💡 本方案的优势：</h3>
+                <ul>
+                    <li><strong>兼容性强</strong>：支持所有浏览器（包括旧版本）</li>
+                    <li><strong>直接调用相机</strong>：使用系统原生相机应用</li>
+                    <li><strong>无需 WebRTC</strong>：不依赖 navigator.mediaDevices</li>
+                    <li><strong>支持所有设备</strong>：手机、平板、电脑均可使用</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ 注意：</strong>如果您使用的是旧版浏览器或不支持 WebRTC 的浏览器，推荐使用本页面。
+            </div>
+
+            <div class="server-config">
+                <label for="serverUrl">🌐 服务器地址：</label>
+                <input type="text" id="serverUrl" value="http://192.168.111.172:8001"
+                       placeholder="例如: http://192.168.111.172:8001">
+                <small style="color: #999; display: block; margin-top: 8px;">
+                    💡 提示：如果服务器 IP 不对，请修改
+                </small>
+            </div>
+
+            <div class="camera-input-wrapper">
+                <label for="cameraInput" class="camera-button">
+                    <span class="camera-icon">📸</span>
+                    <span>点击打开相机拍照</span>
+                </label>
+                <input type="file" id="cameraInput" accept="image/*" capture="user">
+            </div>
+
+            <div class="preview-section" id="previewSection">
+                <h3>📷 预览照片：</h3>
+                <img id="previewImage" class="preview-image" alt="预览">
+                <button class="upload-button" id="uploadButton">
+                    🚀 上传到服务器识别
+                </button>
+            </div>
+
+            <div class="status" id="status"></div>
+
+            <div class="result-section" id="resultSection">
+                <div class="result-box" id="resultBox">
+                    <!-- 识别结果将显示在这里 -->
+                </div>
+            </div>
+
+            <div class="debug-section">
+                <h4>🔍 诊断信息：</h4>
+                <div class="debug-content" id="debugContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cameraInput = document.getElementById('cameraInput');
+        const previewSection = document.getElementById('previewSection');
+        const previewImage = document.getElementById('previewImage');
+        const uploadButton = document.getElementById('uploadButton');
+        const status = document.getElementById('status');
+        const resultSection = document.getElementById('resultSection');
+        const resultBox = document.getElementById('resultBox');
+        const debugContent = document.getElementById('debugContent');
+        const serverUrlInput = document.getElementById('serverUrl');
+
+        let capturedFile = null;
+
+        // 添加调试信息
+        function addDebug(message) {
+            const time = new Date().toLocaleTimeString('zh-CN', { hour12: false });
+            const line = document.createElement('div');
+            line.className = 'debug-line';
+            line.textContent = `[${time}] ${message}`;
+            debugContent.appendChild(line);
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log(`[${time}] ${message}`);
+        }
+
+        // 显示状态
+        function showStatus(message, type) {
+            status.textContent = message;
+            status.className = `status show ${type}`;
+            addDebug(`状态: ${message}`);
+        }
+
+        // 页面加载完成
+        addDebug('========== 页面加载完成 ==========');
+        addDebug(`当前URL: ${window.location.href}`);
+        addDebug(`User Agent: ${navigator.userAgent}`);
+        addDebug(`支持 File API: ${typeof FileReader !== 'undefined' ? '是' : '否'}`);
+        addDebug(`支持 FormData: ${typeof FormData !== 'undefined' ? '是' : '否'}`);
+        addDebug(`支持 navigator.mediaDevices: ${navigator.mediaDevices ? '是' : '否'}`);
+        addDebug('准备就绪，请点击相机按钮拍照');
+
+        // 文件选择事件
+        cameraInput.addEventListener('change', function(e) {
+            addDebug('========== 文件选择事件触发 ==========');
+
+            const file = e.target.files[0];
+            if (!file) {
+                addDebug('❌ 没有选择文件');
+                return;
+            }
+
+            addDebug(`✅ 文件已选择: ${file.name}`);
+            addDebug(`文件类型: ${file.type}`);
+            addDebug(`文件大小: ${(file.size / 1024).toFixed(2)} KB`);
+
+            capturedFile = file;
+
+            // 显示预览
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                addDebug('✅ 文件读取成功，显示预览');
+                previewImage.src = e.target.result;
+                previewSection.classList.add('show');
+                resultSection.classList.remove('show');
+                status.classList.remove('show');
+            };
+
+            reader.onerror = function() {
+                addDebug('❌ 文件读取失败');
+                showStatus('文件读取失败', 'error');
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        // 上传识别
+        uploadButton.addEventListener('click', async function() {
+            if (!capturedFile) {
+                showStatus('请先拍照', 'error');
+                return;
+            }
+
+            addDebug('========== 开始上传识别 ==========');
+            showStatus('正在上传并识别中，请稍候...', 'loading');
+            uploadButton.disabled = true;
+
+            try {
+                // 创建 FormData
+                const formData = new FormData();
+                formData.append('file', capturedFile);
+
+                addDebug('正在上传到服务器...');
+
+                const serverUrl = serverUrlInput.value.trim();
+                const apiUrl = `${serverUrl}/api/detect`;
+                addDebug(`API地址: ${apiUrl}`);
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                addDebug(`服务器响应状态: ${response.status} ${response.statusText}`);
+
+                if (!response.ok) {
+                    throw new Error(`服务器返回错误: ${response.status}`);
+                }
+
+                const result = await response.json();
+                addDebug('✅ 识别完成');
+                addDebug(`识别结果: ${JSON.stringify(result)}`);
+
+                // 显示结果
+                displayResult(result);
+                showStatus('识别成功！', 'success');
+
+            } catch (error) {
+                addDebug(`❌ 错误: ${error.message}`);
+                showStatus(`识别失败: ${error.message}`, 'error');
+            } finally {
+                uploadButton.disabled = false;
+            }
+        });
+
+        // 显示识别结果
+        function displayResult(data) {
+            if (!data.success) {
+                resultBox.innerHTML = `
+                    <h3>❌ 识别失败</h3>
+                    <p>${data.message || '未知错误'}</p>
+                `;
+                resultBox.classList.remove('success');
+            } else if (data.face_count === 0) {
+                resultBox.innerHTML = `
+                    <h3>⚠️ 未检测到人脸</h3>
+                    <p>请确保照片中有清晰的人脸</p>
+                `;
+                resultBox.classList.remove('success');
+            } else {
+                let html = `<h3>✅ 识别成功！</h3>`;
+                html += `<p>检测到 ${data.face_count} 张人脸</p>`;
+
+                data.faces.forEach((face, index) => {
+                    const color = face.name === 'Unknown' ? '#dc3545' : '#28a745';
+                    html += `
+                        <div class="face-item" style="border-left-color: ${color}">
+                            <div class="face-name">人脸 ${index + 1}: ${face.name}</div>
+                            <div class="face-location">
+                                位置: Top=${face.location.top}, Left=${face.location.left}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                resultBox.innerHTML = html;
+                resultBox.classList.add('success');
+            }
+
+            resultSection.classList.add('show');
+        }
+    </script>
+</body>
+</html>

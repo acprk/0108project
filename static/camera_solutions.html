@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摄像头识别方案选择</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .intro-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+
+        .intro-box h3 {
+            color: #1976D2;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .intro-box p {
+            color: #555;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .solution-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .solution-card.recommended {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .solution-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .solution-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .solution-card .description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .features {
+            text-align: left;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .features li {
+            margin: 8px 0;
+            color: #555;
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .solution-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .solution-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .solution-card.recommended .solution-button {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .help-section {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 25px;
+            margin-top: 30px;
+            border-radius: 10px;
+        }
+
+        .help-section h4 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .help-section p {
+            color: #666;
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+
+        .check-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #17a2b8;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .check-button:hover {
+            background: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(23, 162, 184, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📸 摄像头人脸识别方案</h1>
+            <p class="subtitle">根据您的浏览器和设备，选择最适合的识别方案</p>
+        </header>
+
+        <div class="content">
+            <div class="intro-box">
+                <h3>🎯 为什么有多种方案？</h3>
+                <p>
+                    由于不同浏览器对摄像头 API 的支持程度不同，我们提供了<strong>三种不同的方案</strong>，
+                    确保在任何设备和浏览器上都能正常使用人脸识别功能。
+                </p>
+                <p>
+                    如果您不确定该选择哪个，请先点击底部的<strong>"检测我的浏览器"</strong>按钮。
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <!-- 方案 1: 系统相机调用 -->
+                <div class="solution-card recommended">
+                    <span class="recommended-badge">推荐</span>
+                    <span class="solution-icon">📱</span>
+                    <h3>系统相机调用</h3>
+                    <p class="description">
+                        直接调用您设备的系统相机应用拍照，然后上传识别。
+                        <strong>兼容性最好，支持所有浏览器！</strong>
+                    </p>
+                    <ul class="features">
+                        <li>✅ 兼容所有浏览器（包括旧版）</li>
+                        <li>✅ 支持手机、平板、电脑</li>
+                        <li>✅ 不需要 WebRTC 支持</li>
+                        <li>✅ 直接使用系统相机，画质好</li>
+                    </ul>
+                    <a href="camera_mobile_capture.html" class="solution-button">
+                        立即使用 →
+                    </a>
+                </div>
+
+                <!-- 方案 2: WebRTC 实时摄像头 -->
+                <div class="solution-card">
+                    <span class="solution-icon">🎥</span>
+                    <h3>WebRTC 实时摄像头</h3>
+                    <p class="description">
+                        在浏览器中实时显示摄像头画面，可以预览后再拍照识别。
+                        需要现代浏览器支持。
+                    </p>
+                    <ul class="features">
+                        <li>✅ 实时预览摄像头画面</li>
+                        <li>✅ 可以多次拍照</li>
+                        <li>✅ 体验流畅</li>
+                        <li>⚠️ 需要较新的浏览器</li>
+                    </ul>
+                    <a href="camera_capture.html" class="solution-button">
+                        立即使用 →
+                    </a>
+                </div>
+
+                <!-- 方案 3: 图片上传 -->
+                <div class="solution-card">
+                    <span class="solution-icon">📤</span>
+                    <h3>图片上传</h3>
+                    <p class="description">
+                        上传已有的照片进行识别。
+                        适合已经拍好照片或从相册选择的情况。
+                    </p>
+                    <ul class="features">
+                        <li>✅ 上传已有照片</li>
+                        <li>✅ 支持所有浏览器</li>
+                        <li>✅ 无需摄像头</li>
+                        <li>✅ 简单直接</li>
+                    </ul>
+                    <a href="simple_upload.html" class="solution-button">
+                        立即使用 →
+                    </a>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4>❓ 不确定选择哪个方案？</h4>
+                <p>
+                    <strong>如果您遇到了摄像头相关的错误</strong>（例如："navigator.mediaDevices 不存在"），
+                    可以先检测一下您的浏览器兼容性，系统会自动推荐最适合您的方案。
+                </p>
+                <a href="browser_check.html" class="check-button">
+                    🔍 检测我的浏览器
+                </a>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                <h4 style="color: #667eea; margin-bottom: 15px;">💡 使用建议</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #e9ecef;">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">设备/浏览器</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">推荐方案</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                <strong>现代浏览器</strong><br>
+                                <small style="color: #666;">Chrome 53+, Firefox 36+, Safari 11+, Edge 79+</small>
+                            </td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                WebRTC 实时摄像头 或 系统相机调用
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                <strong>旧版浏览器</strong><br>
+                                <small style="color: #666;">IE, 旧版 Safari, 等</small>
+                            </td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                系统相机调用 或 图片上传
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                <strong>手机/平板</strong><br>
+                                <small style="color: #666;">iOS, Android</small>
+                            </td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                系统相机调用（推荐）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px;">
+                                <strong>没有摄像头的设备</strong><br>
+                                <small style="color: #666;">台式机等</small>
+                            </td>
+                            <td style="padding: 12px;">
+                                图片上传
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

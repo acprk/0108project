@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地摄像头采集客户端</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .config-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .config-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        #video {
+            width: 100%;
+            display: block;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        .face-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            margin: 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .status {
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .result-box {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .result-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            padding: 10px;
+            background: white;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .result-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>本地摄像头采集客户端</h1>
+            <p>在本地采集照片 → 上传到服务器识别</p>
+        </header>
+
+        <div class="content">
+            <!-- 配置区域 -->
+            <div class="config-section">
+                <h3>⚙️ 服务器配置</h3>
+                <div class="input-group">
+                    <label>服务器地址:</label>
+                    <input type="text" id="serverUrl" value="http://192.168.111.172:8001"
+                           placeholder="例如: http://192.168.111.172:8001">
+                </div>
+                <p style="color: #6c757d; font-size: 0.9em; margin-top: 10px;">
+                    💡 提示: 填写你的服务器IP地址和端口
+                </p>
+            </div>
+
+            <!-- 摄像头预览 -->
+            <div class="video-container">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas"></canvas>
+                <div class="face-overlay" id="faceOverlay"></div>
+            </div>
+
+            <!-- 控制按钮 -->
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">启动本地摄像头</button>
+                <button id="captureBtn" class="btn btn-success" disabled>拍照并识别</button>
+                <button id="stopBtn" class="btn btn-secondary" disabled>停止</button>
+            </div>
+
+            <!-- 状态显示 -->
+            <div id="status" class="status">准备就绪</div>
+
+            <!-- 识别结果 -->
+            <div id="resultBox" class="result-box" style="display: none;">
+                <h3>识别结果</h3>
+                <div id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let stream = null;
+
+        // 启动摄像头
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            try {
+                updateStatus('正在启动摄像头...', '');
+
+                // 检查浏览器兼容性
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    updateStatus('您的浏览器不支持摄像头访问。请使用Chrome、Firefox或Edge浏览器。', 'error');
+                    return;
+                }
+
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('captureBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = false;
+
+                    updateStatus('摄像头已启动，点击"拍照并识别"进行识别', 'success');
+                };
+
+            } catch (error) {
+                console.error('摄像头启动失败:', error);
+                updateStatus('摄像头启动失败: ' + error.message, 'error');
+            }
+        });
+
+        // 拍照并上传识别
+        document.getElementById('captureBtn').addEventListener('click', async () => {
+            try {
+                updateStatus('正在拍照...', '');
+
+                // 捕获当前帧
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const imageData = canvas.toDataURL('image/jpeg', 0.9);
+
+                updateStatus('正在上传到服务器识别...', '');
+
+                // 获取服务器地址
+                const serverUrl = document.getElementById('serverUrl').value.trim();
+                if (!serverUrl) {
+                    updateStatus('请填写服务器地址', 'error');
+                    return;
+                }
+
+                // 上传到服务器
+                const formData = new FormData();
+                formData.append('image_data', imageData);
+
+                const response = await fetch(`${serverUrl}/api/detect_stream`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayResult(result, imageData);
+                    updateStatus(`识别成功！检测到 ${result.face_count} 张人脸`, 'success');
+                } else {
+                    updateStatus('识别失败', 'error');
+                }
+
+            } catch (error) {
+                console.error('识别失败:', error);
+                updateStatus('识别失败: ' + error.message, 'error');
+            }
+        });
+
+        // 停止摄像头
+        document.getElementById('stopBtn').addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            video.srcObject = null;
+
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('captureBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = true;
+
+            updateStatus('摄像头已停止', '');
+        });
+
+        // 显示识别结果
+        function displayResult(result, imageData) {
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            let html = `
+                <img src="${imageData}" class="result-image" style="max-width: 400px; margin-bottom: 15px;">
+                <p><strong>检测到 ${result.face_count} 张人脸:</strong></p>
+            `;
+
+            result.faces.forEach((face, index) => {
+                const color = face.name === 'Unknown' ? '#dc3545' : '#28a745';
+                html += `
+                    <div class="result-item" style="border-left-color: ${color}">
+                        <strong>人脸 ${index + 1}:</strong> ${face.name}
+                        <br><small>位置: Top=${face.location.top}, Left=${face.location.left}</small>
+                    </div>
+                `;
+            });
+
+            resultContent.innerHTML = html;
+            resultBox.style.display = 'block';
+        }
+
+        // 更新状态
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status';
+            if (type) statusDiv.classList.add(type);
+        }
+    </script>
+</body>
+</html>
