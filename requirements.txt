@@ -3,7 +3,7 @@ uvicorn[standard]==0.27.0
 python-multipart==0.0.6
 pydantic-settings>=2.0.0
 numpy>=1.26.0,<2.0.0
-opencv-python-headless==4.9.0.80
+# opencv-python-headless removed
 Pillow==10.2.0
 supabase==2.3.0
 https://github.com/alvinregin/dlib-wheels/releases/download/v20.0.0/dlib-20.0.0-cp312-cp312-linux_x86_64.whl
